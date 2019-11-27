@@ -1,55 +1,20 @@
 <template>
   <div>
-    <h3>Add Product</h3>
-
-    <div class="card products__add-product">
-      <div>
-        <input v-model="addProductData.product_id" class="validate " placeholder="Id" />
-      </div>
-      <div>
-        <input v-model="addProductData.name" class="validate" placeholder="Name" />
-      </div>
-      <div>
-        <input v-model="addProductData.price" class="validate" placeholder="Price" />
-      </div>
-      <div>
-        <i v-on:click="onAdd" class="material-icons medium style-button">add_circle</i>
-      </div>
-    </div>
-    <h1>Products</h1>
-
-    <div v-for="product in sortedProducts" :key="product.product_id" class="collection">
-      <div v-if="editId === product.product_id" class="collection-item product__list-item" :class="{'yellow lighten-4': editId === product.product_id}">
-        <div>{{product.product_id}}</div>
-        <div>
-          <input class="validate" v-model="editProductData.name" />
-        </div>
-        <div>
-          <input class="validate" v-model="editProductData.price" />
-        </div>
-        <div>
-          <i v-on:click="onEditSubmit(product)" class="material-icons style-button">check</i>
-          <i v-on:click="onCancel" class="material-icons style-button">cancel</i>
-        </div>
-      </div>
-      <div v-else class="collection-item product__list-item">
-        <div>{{product.product_id}}</div>
-        <div>{{product.name}}</div>
-        <div>{{product.price}}</div>
-        <div>
-          <i v-on:click="onEdit(product)" class="material-icons style-button">edit</i>
-          <i v-on:click="onDelete(product.product_id)" class="material-icons style-button">delete</i>
-        </div>
-      </div>
-    </div>
+    <AddProduct v-bind="{addProductData, onAdd}" />
+    <ProductList v-bind="{editId, editProductData, onCancel, onDelete, onEdit, onEditSubmit, sortedProducts}" />
   </div>
 </template>
 
 <script>
 import db from '@/db'
-
+import AddProduct from './AddProduct.vue'
+import ProductList from './ProductList.vue'
 export default {
   name: 'Products',
+  components: {
+    AddProduct,
+    ProductList
+  },
   data() {
     return {
       products:[],
@@ -138,11 +103,6 @@ export default {
   display: flex;
   justify-content: space-between;
   
-}
-.products__add-product {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
 }
 .style-button {
   cursor: pointer;
